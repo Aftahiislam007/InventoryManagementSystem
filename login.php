@@ -3,40 +3,48 @@
 
 include('database_connection.php');
 
-if(isset($_SESSION['type']))
-{
-	header("location:index.php");
-}
+// if(isset($_SESSION['type']))
+// {
+// 	header("location:index.php");
+// }
 
 $message = '';
 
 if(isset($_POST["login"]))
 {
-	$query = "
-	SELECT * FROM user_details 
-		WHERE user_email = :user_email
-	";
-	$statement = $connect->prepare($query);
-	$statement->execute(
-		array(
-				'user_email'	=>	$_POST["user_email"]
-			)
-	);
-	$count = $statement->rowCount();
-	if($count > 0)
-	{
-		$result = $statement->fetchAll();
-		foreach($result as $row)
+	if (empty($_POST['user_email']) || empty($_POST['user_password'])) {
+		$message = "Username or Password is invalid";
+	}
+	else {
+		$user_email = $_POST['user_email'];
+		$user_password = $_POST['user_password'];
+
+		$user_email = mysqli_real_escape_string($connect, $user_email);
+		$user_password = mysqli_real_escape_string($connect, $user_password);
+
+		$query = mysqli_query($connect, "SELECT * FROM user_details WHERE user_email = '$user_email'");
+		// $statement = $connect->prepare($query);
+		// $statement->execute();
+		
+		$rowCount = mysqli_num_rows($query);
+		if($rowCount == 1)
 		{
-			if($row['user_status'] == 'Active')
+			// $result = $statement->get_result();
+			// $result_data = $result->fetch_all(MYSQLI_ASSOC);
+			$result = mysqli_fetch_assoc($query);
+			// print_r($result["user_email"]);
+			if($result["user_status"] == 'Active')
 			{
-				if(password_verify($_POST["user_password"], $row["user_password"]))
+				
+				// $pass_verify = password_verify($user_password, $result["user_password"]);
+				// var_dump($pass_verify);
+				if($user_password == $result["user_password"])
 				{
 				
-					$_SESSION['type'] = $row['user_type'];
-					$_SESSION['usar_id'] = $row['user_id'];
-					$_SESSION['usar_name'] = $row['user_name'];
-					header("location:index.php");
+					$_SESSION['type'] = $result['user_type'];
+					$_SESSION['user_id'] = $result['user_id'];
+					$_SESSION['user_name'] = $result['user_name'];
+					header("location: index.php");
 				}
 				else
 				{
@@ -48,11 +56,24 @@ if(isset($_POST["login"]))
 				$message = "<label>Your account is disabled, Contact Master</label>";
 			}
 		}
+		else
+		{
+			$message = "<label>Wrong Email Address</labe>";
+		}
+
 	}
-	else
-	{
-		$message = "<label>Wrong Email Address</labe>";
-	}
+
+
+	
+	
+	// $params = array('ss', $_POST["user_email"]);
+	// $tmp = array();
+	// foreach ($params as $key => $value) {
+	// 	$tmp[$key] = &$params[$key];
+	// }
+	// call_user_func_array(array($statement, 'bind_param'), $tmp);
+	// $statement->execute();
+	
 }
 
 ?>

@@ -3,10 +3,11 @@
 include('database_connection.php');
 include('function.php');
 
-if(!isset($_SESSION["type"]))
-{
-	header("location:login.php");
-}
+// if(isset($_SESSION["type"]))
+// {
+// 	// print_r($_SESSION["type"]);
+// 	// header("location: logout.php");
+// }
 
 include('header.php');
 
@@ -16,42 +17,45 @@ include('header.php');
 	<?php
 	if($_SESSION['type'] == 'master')
 	{
+		var_dump($_SESSION['type']);
 	?>
-	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading"><strong>Total User</strong></div>
-			<div class="panel-body" align="center">
-				<h1><?php echo count_total_user($connect); ?></h1>
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>Total User</strong></div>
+				<div class="panel-body" align="center">
+					<h1><?php echo count_total_user($connect); ?></h1>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading"><strong>Total Category</strong></div>
-			<div class="panel-body" align="center">
-				<h1><?php echo count_total_category($connect); ?></h1>
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>Total Category</strong></div>
+				<div class="panel-body" align="center">
+					<h1><?php echo count_total_category($connect); ?></h1>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading"><strong>Total Brand</strong></div>
-			<div class="panel-body" align="center">
-				<h1><?php echo count_total_brand($connect); ?></h1>
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>Total Brand</strong></div>
+				<div class="panel-body" align="center">
+					<h1><?php echo count_total_brand($connect); ?></h1>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="col-md-3">
-		<div class="panel panel-default">
-			<div class="panel-heading"><strong>Total Item in Stock</strong></div>
-			<div class="panel-body" align="center">
-				<h1><?php echo count_total_product($connect); ?></h1>
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading"><strong>Total Item in Stock</strong></div>
+				<div class="panel-body" align="center">
+					<h1><?php echo count_total_product($connect); ?></h1>
+				</div>
 			</div>
 		</div>
-	</div>
 	<?php
 	}
-	?>
+	else {
+
+		?>
 		<div class="col-md-4">
 			<div class="panel panel-default">
 				<div class="panel-heading"><strong>Total Order Value</strong></div>
@@ -77,6 +81,11 @@ include('header.php');
 			</div>
 		</div>
 		<hr />
+
+		<?php
+	}
+	?>
+		
 		<?php
 		if($_SESSION['type'] == 'master')
 		{

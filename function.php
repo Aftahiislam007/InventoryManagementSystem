@@ -168,8 +168,9 @@ function count_total_order_value($connect)
 	}
 	$statement = $connect->prepare($query);
 	$statement->execute();
-	$result = $statement->fetchAll();
-	foreach($result as $row)
+	$result = $statement->get_result();
+	$result_data = $result->fetch_all(MYSQLI_ASSOC);
+	foreach($result_data as $row)
 	{
 		return number_format($row['total_order_value'], 2);
 	}
@@ -188,7 +189,8 @@ function count_total_cash_order_value($connect)
 	}
 	$statement = $connect->prepare($query);
 	$statement->execute();
-	$result = $statement->fetchAll();
+	$result = $statement->get_result();
+	$result_data = $result->fetch_all(MYSQLI_ASSOC);
 	foreach($result as $row)
 	{
 		return number_format($row['total_order_value'], 2);
@@ -206,8 +208,9 @@ function count_total_credit_order_value($connect)
 	}
 	$statement = $connect->prepare($query);
 	$statement->execute();
-	$result = $statement->fetchAll();
-	foreach($result as $row)
+	$result = $statement->get_result();
+	$result_data = $result->fetch_all(MYSQLI_ASSOC);
+	foreach($result_data as $row)
 	{
 		return number_format($row['total_order_value'], 2);
 	}
